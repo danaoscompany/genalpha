@@ -247,6 +247,12 @@ class Employer extends CI_Controller {
 		$this->db->where('id', $jobID);
 		$this->db->delete('jobs');
 	}
+
+	public function get_employee_email() {
+		$employeeID = intval($this->input->post('employee_id'));
+		$employee = $this->db->query("SELECT * FROM `employees` WHERE `id`=" . $employeeID)->row_array();
+		echo $this->db->query("SELECT * FROM `users` WHERE `id`=" . $employee['user_id'])->row_array()['email'];
+	}
 	
 	public function get_payroll_components() {
 		$employerID = intval($this->input->post('employer_id'));
@@ -686,26 +692,52 @@ class Employer extends CI_Controller {
 		echo json_encode($employees);
 	}
 
+	private function get_full_month_name($month) {
+		if ($month == 0) {
+			return "Januari";
+		} else if ($month == 1) {
+			return "Februari";
+		} else if ($month == 2) {
+			return "Maret";
+		} else if ($month == 3) {
+			return "April";
+		} else if ($month == 4) {
+			return "Mei";
+		} else if ($month == 5) {
+			return "Juni";
+		} else if ($month == 6) {
+			return "Juli";
+		} else if ($month == 7) {
+			return "Agustus";
+		} else if ($month == 8) {
+			return "September";
+		} else if ($month == 9) {
+			return "Oktober";
+		} else if ($month == 10) {
+			return "November";
+		} else if ($month == 11) {
+			return "Desember";
+		}
+		return "";
+	}
+
 	public function send_salary_slip() {
 		$employeeID = intval($this->input->post('employee_id'));
-		$date = intval($this->input->post('date'));
+		$month = intval($this->input->post('month'));
+		$year = intval($this->input->post('year'));
+		if (strlen($month) < 2) {
+			$month = "0" . $month;
+		}
 		$user = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $employeeID)->row_array();
 		$pdfFileName = Util::generateUUIDv4() . ".pdf";
 		file_put_contents("userdata/" . $pdfFileName, base64_decode($this->input->post('salary_slip')));
-		$config['upload_path']          = './userdata/';
-		$config['allowed_types']        = '*';
-		$config['max_size']             = 2147483647;
-		$config['file_name']            = $pdfFileName;
-		$this->load->library('upload', $config);
-		if ($this->upload->do_upload('file')) {
-			$this->email->from('localhost@localhost', 'Gen Alpha');
-			$this->email->to($user['email']);
-			$this->email->subject('Slip Gaji Bulan ' . $date);
-			$this->email->message('Terlampir slip gaji bulan ' . $date);
-			$this->email->attach('userdata/' . $pdfFileName);
-			$this->email->send();
-		}
-		echo $pdfFileName;
+		MailSender::sendMailWithAttachments('danaoscompany@gmail.com',
+			'Slip Gaji Bulan ' . $month . '-' . $year,
+			'Terlampir slip gaji bulan ' . $month . '-' . $year,
+			array(
+				'userdata/' . $pdfFileName
+			));
+		//echo $pdfFileName;
 	}
 
 	public function get_total_days_working() {
@@ -765,8 +797,9 @@ class Employer extends CI_Controller {
 		for ($i=0; $i<$daysCount; $i++) {
 			$date = new DateTime();
 			$date->setDate($year, $month, $i+1);
-			$askingPermission = $this->db->query("SELECT * FROM `attendances` WHERE DATE(`date`)='" . $date->format('Y-m-d') . "' AND `type`='permission'")->row_array();
-			if ($askingPermission != NULL) {
+			$in = intval($this->db->query("SELECT * FROM `attendances` WHERE DATE(`date`)='" . $date->format('Y-m-d') . "' AND `type`='in'")->num_rows());
+			$out = intval($this->db->query("SELECT * FROM `attendances` WHERE DATE(`date`)='" . $date->format('Y-m-d') . "' AND `type`='out'")->num_rows());
+			if ($in > 0 && $out > 0 && $in == $out) {
 				$totalDaysAskingPermission++;
 			}
 		}
@@ -819,5 +852,26 @@ class Employer extends CI_Controller {
 			}
 		}
 		echo $totalDaysCuti;
+	}
+	
+	public function update_fcm_id() {
+		$userID = intval($this->input->post('user_id'));
+		$fcmID = $this->input->post('fcm_id');
+		$this->db->query("UPDATE `employers` SET `fcm_id`='" . $fcmID . "' WHERE `id`=" . $userID);
+	}
+	
+	public function get_chats() {
+		$employerID = intval($this->input->post('employer_id'));
+		$chats = $this->db->query("SELECT * FROM `chats` WHERE (`user_1`=" . $employerID . " AND `user_1_type`='employer') OR (`user_2`=" . $employerID . " AND `user_2_type`='employer')")->result_array();
+		for ($i=0; $i<sizeof($chats); $i++) {
+			$user1Type = $chats[$i]['user_1_type'];
+			$user2Type = $chats[$i]['user_2_type'];
+			if ($user1Type == 'employer') {
+				$chats[$i]['opponent'] = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $chats[$i]['user_2'])->row_array();
+			} else if ($user2Type == 'employer') {
+				$chats[$i]['opponent'] = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $chats[$i]['user_1'])->row_array();
+			}
+		}
+		echo json_encode($chats);
 	}
 }

@@ -2,6 +2,7 @@
 
 include 'MailSender.php';
 include 'Util.php';
+include 'FCM.php';
 
 class User extends CI_Controller {
 
@@ -681,6 +682,8 @@ class User extends CI_Controller {
 		$contracts = $this->db->query("SELECT * FROM `employees` WHERE `user_id`=" . $userID . " ORDER BY `date` DESC")->result_array();
 		for ($i=0; $i<sizeof($contracts); $i++) {
 			$contracts[$i]['employer'] = $this->db->query("SELECT * FROM `employers` WHERE `id`=" . intval($contracts[$i]['employer_id']))->row_array();
+			$contracts[$i]['requirements'] = $this->db->query("SELECT * FROM `job_requirements` WHERE `job_id`=" . intval($contracts[$i]['job_id']))->row_array();
+			$contracts[$i]['benefits'] = $this->db->query("SELECT * FROM `job_benefits` WHERE `job_id`=" . intval($contracts[$i]['job_id']))->row_array();
 			$contracts[$i]['job'] = $this->db->query("SELECT * FROM `jobs` WHERE `id`=" . intval($contracts[$i]['job_id']))->row_array();
 		}
 		echo json_encode($contracts);
@@ -712,6 +715,8 @@ class User extends CI_Controller {
 		}
 		for ($i=0; $i<sizeof($jobs); $i++) {
 			$jobs[$i]['employer'] = $this->db->query("SELECT * FROM `employers` WHERE `id`=" . $jobs[$i]['employer_id'])->row_array();
+			$jobs[$i]['requirements'] = $this->db->query("SELECT * FROM `job_requirements` WHERE `job_id`=" . $jobs[$i]['id'])->result_array();
+			$jobs[$i]['benefits'] = $this->db->query("SELECT * FROM `job_benefits` WHERE `job_id`=" . $jobs[$i]['id'])->result_array();
 		}
 		echo json_encode($jobs);
 	}
@@ -835,6 +840,8 @@ class User extends CI_Controller {
 		$jobID = intval($this->input->post('id'));
 		$job = $this->db->query("SELECT * FROM `jobs` WHERE `id`=" . $jobID)->row_array();
 		$job['employer'] = $this->db->query("SELECT * FROM `employers` WHERE `id`=" . intval($job['employer_id']))->row_array();
+		$job['requirements'] = $this->db->query("SELECT * FROM `job_requirements` WHERE `job_id`=" . intval($job['id']))->result_array();
+		$job['benefits'] = $this->db->query("SELECT * FROM `job_benefits` WHERE `job_id`=" . intval($job['id']))->result_array();
 		echo json_encode($job);
 	}
 	
@@ -912,5 +919,139 @@ class User extends CI_Controller {
 		$this->db->insert('attendances', array(
 			
 		));
+	}
+	
+	public function get_banners() {
+		echo json_encode($this->db->query("SELECT * FROM `banners`")->result_array());
+	}
+	
+	public function get_all_jobs() {
+		$jobs = $this->db->query("SELECT * FROM `jobs` ORDER BY `post_date` DESC LIMIT 10")->result_array();
+		for ($i=0; $i<sizeof($jobs); $i++) {
+			$jobs[$i]['employer'] = $this->db->query("SELECT * FROM `employers` WHERE `id`=" . $jobs[$i]['employer_id'])->row_array();
+			$jobs[$i]['requirements'] = $this->db->query("SELECT * FROM `job_requirements` WHERE `job_id`=" . $jobs[$i]['id'])->result_array();
+			$jobs[$i]['benefits'] = $this->db->query("SELECT * FROM `job_benefits` WHERE `job_id`=" . $jobs[$i]['id'])->result_array();
+		}
+		echo json_encode($jobs);
+	}
+	
+	public function get_favorite_jobs() {
+		$userID = intval($this->input->post('user_id'));
+		$favoriteJobs = $this->db->query("SELECT * FROM `favorite_jobs` WHERE `user_id`=" . $userID)->result_array();
+		for ($i=0; $i<sizeof($favoriteJobs); $i++) {
+			$job = $this->db->query("SELECT * FROM `jobs` WHERE `id`=" . $favoriteJobs[$i]['job_id'])->row_array();
+			if ($job != NULL) {
+				$job['employer'] = $this->db->query("SELECT * FROM `employers` WHERE `id`=" . $job['employer_id'])->row_array();
+				$job['requirements'] = $this->db->query("SELECT * FROM `job_requirements` WHERE `job_id`=" . $job['id'])
+					->result_array();
+				$job['benefits'] = $this->db->query("SELECT * FROM `job_benefits` WHERE `job_id`=" . $job['id'])->result_array();
+			} else {
+				$job = array(
+					'employer' => NULL,
+					'requirements' => NULL,
+					'benefits' => NULL
+				);
+			}
+			$favoriteJobs[$i]['job'] = $job;
+		}
+		echo json_encode($favoriteJobs);
+	}
+	
+	public function get_viewed_jobs() {
+		$userID = intval($this->input->post('user_id'));
+		$viewedJobs = $this->db->query("SELECT * FROM `viewed_jobs` WHERE `user_id`=" . $userID)->result_array();
+		for ($i=0; $i<sizeof($viewedJobs); $i++) {
+			$job = $this->db->query("SELECT * FROM `jobs` WHERE `id`=" . $viewedJobs[$i]['job_id'])->row_array();
+			if ($job != NULL) {
+				$job['employer'] = $this->db->query("SELECT * FROM `employers` WHERE `id`=" . $job['employer_id'])->row_array();
+				$job['requirements'] = $this->db->query("SELECT * FROM `job_requirements` WHERE `job_id`=" . $job['id'])
+					->result_array();
+				$job['benefits'] = $this->db->query("SELECT * FROM `job_benefits` WHERE `job_id`=" . $job['id'])->result_array();
+			}
+			$viewedJobs[$i]['job'] = $job;
+		}
+		echo json_encode($viewedJobs);
+	}
+	
+	public function view_job() {
+		$userID = intval($this->input->post('user_id'));
+		$jobID = intval($this->input->post('job_id'));
+		$date = $this->input->post('date');
+		$jobs = $this->db->query("SELECT * FROM `viewed_jobs` WHERE `user_id`=" . $userID . " AND `job_id`=" . $jobID)->result_array();
+		if (sizeof($jobs) > 0) {
+			$this->db->query("UPDATE `viewed_jobs` SET `date`='" . $date . "' WHERE `user_id`=" . $userID . " AND `job_id`=" . $jobID);
+		} else {
+			$this->db->insert('viewed_jobs', array(
+				'user_id' => $userID,
+				'job_id' => $jobID,
+				'date' => $date
+			));
+		}
+	}
+	
+	public function get_chat_by_id() {
+		$id = intval($this->input->post('id'));
+		echo json_encode($this->db->query("SELECT * FROM `chats` WHERE `id`=" . $id)->row_array());
+	}
+	
+	public function start_chat() {
+		$user1ID = intval($this->input->post('user_1_id'));
+		$user2ID = intval($this->input->post('user_2_id'));
+		$user1Type = $this->input->post('user_1_type');
+		$user2Type = $this->input->post('user_2_type');
+		$chats = $this->db->query("SELECT * FROM `chats` WHERE `user_1`=" . $user1ID . " AND `user_2`=" . $user2ID . " AND `user_1_type`='" . $user1Type . "' AND `user_2_type`='" . $user2Type . "'")->result_array();
+		$chatID = 0;
+		if (sizeof($chats) <= 0) {
+			$this->db->insert('chats', array(
+				'user_1' => $user1ID,
+				'user_2' => $user2ID,
+				'user_1_type' => $user1Type,
+				'user_2_type' => $user2Type
+			));
+			$chatID = $this->db->insert_id();
+		} else {
+			$chatID = $chats[0]['id'];
+		}
+		echo $chatID;
+	}
+	
+	public function send_chat_message() {
+		$chatID = intval($this->input->post('chat_id'));
+		$senderID = intval($this->input->post('sender_id'));
+		$senderType = $this->input->post('sender_type');
+		$receiverID = intval($this->input->post('receiver_id'));
+		$receiverType = $this->input->post('receiver_type');
+		$message = $this->input->post('message');
+		$date = $this->input->post('date');
+		if ($receiverType == 'worker' || $receiverType == 'employee') {
+			$user = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $receiverID)->row_array();
+			$fcmID = $user['fcm_id'];
+			FCM::send_message('Pesan baru', strlen($message)>30?substr($message, 0, 30) . "...":$message, $fcmID, array());
+		}
+		$this->db->insert('chat_messages', array(
+			'chat_id' => $chatID,
+			'sender_id' => $senderID,
+			'sender_type' => $senderType,
+			'receiver_id' => $receiverID,
+			'receiver_type' => $receiverType,
+			'message' => $message,
+			'date' => $date
+		));
+		$messageID = intval($this->db->insert_id());
+		echo json_encode($this->db->query("SELECT * FROM `chat_messages` WHERE `id`=" . $messageID)->row_array());
+	}
+	
+	public function get_chat_messages() {
+		$chatID = intval($this->input->post('chat_id'));
+		$start = intval($this->input->post('start'));
+		$length = intval($this->input->post('length'));
+		$messages = $this->db->query("SELECT * FROM `chat_messages` WHERE `chat_id`=" . $chatID . " ORDER BY `date` DESC LIMIT " . $start . "," . $length)->result_array();
+		echo json_encode($messages);
+	}
+	
+	public function update_fcm_id() {
+		$userID = intval($this->input->post('user_id'));
+		$fcmID = $this->input->post('fcm_id');
+		$this->db->query("UPDATE `users` SET `fcm_id`='" . $fcmID . "' WHERE `id`=" . $userID);
 	}
 }

@@ -186,11 +186,21 @@ async function getDaysCuti() {
 	})).text());
 }
 
+async function getUserEmail(employeeID) {
+	let fd = new FormData();
+	fd.append("employee_id", employeeID);
+	return await(await fetch(PHP_URL+"/employer/get_employee_email", {
+		method: 'POST',
+		body: fd
+	})).text();
+}
+
 async function runPayroll() {
 	loadingBar.set(0, false);
 	$("#loading-bar-container").css("display", "flex").hide().fadeIn(300);
 	for (let i=0; i<employees.length; i++) {
 		let employee = employees[i];
+		$("#send-email-user").html(await getUserEmail(parseInt(employee['id'])));
 		var doc = new jsPDF();
 		doc.text('SLIP GAJI KARYAWAN', 130, 10);
 		doc.text("___________________", 130, 11);
@@ -216,67 +226,46 @@ async function runPayroll() {
 		doc.setFontType("normal");
 		doc.text("Hari Masuk", 10, 73);
 		doc.text("Hari Absen", 10, 78);
-		doc.text("Sakit SKD", 10, 83);
-		doc.text("Sakit Non SKD", 10, 88);
-		doc.text("Ijin", 10, 93);
-		doc.text("Ijin 2", 10, 98);
-		doc.text("OT Hour", 10, 103);
-		doc.text("Hari Cuti", 10, 108);
+		doc.text("Hari Tugas Keluar", 10, 83);
 		let daysWorking = await getDaysWorking();
 		let daysNotWorking = moment({year: year, month: month, day: 1}).daysInMonth()-daysWorking;
-		doc.text(""+daysWorking, 50, 73);
-		doc.text(""+daysNotWorking, 50, 78);
-		doc.text(""+await getDaysSickWithSKD(), 50, 83);
-		doc.text(""+await getDaysSick(), 50, 88);
-		doc.text(""+await getDaysAskingPermissions(), 50, 93);
-		doc.text(""+await getDaysAskingPermissions2(), 50, 98);
-		doc.text(""+await getDaysOvertime(), 50, 103);
-		doc.text(""+await getDaysCuti(), 50, 108);
-		doc.text("Lembur", 65, 73);
-		doc.text("Gaji Pokok", 65, 78);
-		doc.text("Tunjangan Jabatan", 65, 83);
-		doc.text("Uang Makan", 65, 88);
-		doc.text("Intensif Marketing", 65, 93);
-		doc.text("Transport", 65, 98);
-		doc.text("Tunjangan HP", 65, 103);
-		doc.text("Bonus", 65, 108);
-		doc.text("THR", 65, 113);
-		doc.text("Uang Kerajinan", 65, 118);
-		doc.text(""+overtimes[i], 120, 73);
-		doc.text("0", 120, 78);
-		doc.text("0", 120, 83);
-		doc.text("0", 120, 88);
-		doc.text("0", 120, 93);
-		doc.text("0", 120, 98);
-		doc.text("0", 120, 103);
-		doc.text("0", 120, 108);
-		doc.text("0", 120, 113);
-		doc.text("0", 120, 118);
+		doc.text(""+daysWorking, 50, 73, null, null, 'right');
+		doc.text(""+daysNotWorking, 50, 78, null, null, 'right');
+		doc.text(""+await getDaysAskingPermissions(), 50, 83, null, null, 'right');
+		doc.text("Gaji Pokok", 65, 73);
+		doc.text("Bonus", 65, 78);
+		doc.text("Lembur", 65, 83);
+		doc.text("Intensif", 65, 88);
+		doc.text("Komisi", 65, 93);
+		doc.text("Tunjangan Pulsa", 65, 98);
+		doc.text(""+employee['job']['salary'], 120, 73, null, null, 'right');
+		doc.text(""+overtimes[i], 120, 78, null, null, 'right');
+		doc.text(""+bonuses[i], 120, 83, null, null, 'right');
+		doc.text(""+intensives[i], 120, 88, null, null, 'right');
+		doc.text(""+commissions[i], 120, 93, null, null, 'right');
+		doc.text(""+mobileTopups[i], 120, 98, null, null, 'right');
 		doc.text("____________________________________", 65, 123);
 		doc.setFontStyle('bold');
+		let totalIncome = parseInt(employee['job']['salary'])
+			+overtimes[i]+bonuses[i]+intensives[i]+commissions[i]+mobileTopups[i];
 		doc.text("Total Pendapatan", 65, 128);
-		doc.text("0", 120, 128);
+		doc.text(""+totalIncome, 120, 128, null, null, 'right');
 		doc.setFontStyle('normal');
-		doc.text("Cicilan Pinjaman", 130, 73);
-		doc.text("Potongan Jamsostek", 130, 78);
-		doc.text("Potongan Absen", 130, 83);
-		doc.text("Potongan Telat", 130, 88);
-		doc.text("PPH21", 130, 93);
-		doc.text("0", 175, 73);
-		doc.text("0", 175, 78);
-		doc.text("0", 175, 83);
-		doc.text("0", 175, 88);
-		doc.text("0", 175, 93);
+		doc.text("Potongan Absen", 130, 73);
+		doc.text(""+deductions[i], 175, 73, null, null, 'right');
 		doc.text("____________________________________", 130, 123);
 		doc.setFontStyle('bold');
+		let totalDeductions = deductions[i];
 		doc.text("Total Potongan", 130, 128);
-		doc.text("0", 175, 128);
+		doc.text(""+totalDeductions, 175, 128, null, null, 'right');
 		doc.setFontSize(14);
+		let totalEarnings = totalIncome-totalDeductions;
 		doc.text("Jumlah Gaji", 100, 140);
-		doc.text("0", 150, 140);
+		doc.text(""+totalEarnings, 150, 140, null, null, 'right');
 		let fd = new FormData();
 		fd.append("employee_id", employee['id']);
-		fd.append("date", $("#date").val().trim());
+		fd.append("month", month);
+		fd.append("year", year);
 		fd.append("salary_slip", btoa(doc.output()));
 		await fetch(PHP_URL+"/employer/send_salary_slip", {
 			method: 'POST',
@@ -284,7 +273,6 @@ async function runPayroll() {
 		})
 			.then(response => response.text())
 			.then(async (response) => {
-				alert(response);
 				loadingBar.set(i*10, true);
 			});
 	}

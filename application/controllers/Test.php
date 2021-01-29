@@ -209,6 +209,60 @@ class Test extends CI_Controller {
 	}
 
 	public function send_email_3() {
-		MailSender::sendMail('danaoscompany@gmail.com', 'This is subject', 'This is body');
+		MailSender::sendMailWithAttachments('danaoscompany@gmail.com', 'This is subject',
+			'This is body', array(
+				'userdata/5a7d1d1a-6a20-4363-9cf4-7ee9aa0a413f'
+			));
+	}
+	
+	public function m() {
+		for ($i=1; $i<=4; $i++) {
+			$this->db->insert('job_requirements', array(
+				'job_id' => $i,
+				'title' => 'Have knowledge of programming languages (Java, or JavaScript)'
+			));
+			$this->db->insert('job_requirements', array(
+				'job_id' => $i,
+				'title' => 'Have excellent communication skills and ability to work with a team'
+			));
+			$this->db->insert('job_requirements', array(
+				'job_id' => $i,
+				'title' => 'Have strong motivation to learn new things and upgrading competencies in every aspect'
+			));
+			$this->db->insert('job_requirements', array(
+				'job_id' => $i,
+				'title' => 'Can generate and working with REST API'
+			));
+			$this->db->insert('job_requirements', array(
+				'job_id' => $i,
+				'title' => 'SQL knowledge (Oracle / Postgresql / MongoDB / Cassandra) **picks one or more'
+			));
+			$this->db->insert('job_requirements', array(
+				'job_id' => $i,
+				'title' => 'Agile development knowledge'
+			));
+			$this->db->insert('job_requirements', array(
+				'job_id' => $i,
+				'title' => 'Minimum education diploma in information'
+			));
+			$this->db->insert('job_requirements', array(
+				'job_id' => $i,
+				'title' => 'Optional (Oracle Netsuite SuiteScript 2.0, Oracle Netsuite Functional, Angularjs Framework, NodeJS, OpenAPI 3.0 or Swagger)'
+			));
+			$this->db->insert('job_requirements', array(
+				'job_id' => $i,
+				'title' => 'Project Based Salary'
+			));
+			$this->db->insert('job_requirements', array(
+				'job_id' => $i,
+				'title' => 'Location Surabaya'
+			));
+		}
+	}
+	
+	public function n() {
+		for ($i=1; $i<=4; $i++) {
+			$this->db->query("INSERT INTO `job_benefits` (`job_id`, `benefit`) VALUES (" . $i . ", 'Tunjangan transportasi, tunjangan makan, tunjangan anak, BPJS ketenagakerjaan.')");
+		}
 	}
 }

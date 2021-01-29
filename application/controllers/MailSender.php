@@ -34,13 +34,41 @@ class MailSender extends CI_Controller {
 			$mail->Host = 'smtp.gmail.com';
 			$mail->SMTPAuth = true;
 			$mail->SMTPDebug = 2;
-			$mail->Username = 'localhost@gmail.com';
+			$mail->Username = 'genalpha.id@gmail.com';
 			$mail->Password = 'GenAlpha123';
 			$mail->SMTPSecure = 'ssl';
 			$mail->Port = 465;
-			$mail->setFrom('danaoscompany2@gmail.com', 'DanaOS Company');
+			$mail->setFrom('genalpha.id@gmail.com', 'GenAlpha');
 			$mail->addAddress($to, '');
 			$mail->isHTML(true);
+			$mail->Subject = $subject;
+			$mail->Body = $content;
+			if (!$mail->send()) {
+				echo $mail->ErrorInfo;
+			}
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+	}
+
+	public static function sendMailWithAttachments($to, $subject, $content, $attachments) {
+		$mail = new PHPMailer(true);
+		try {
+			$mail->isSMTP();
+			$mail->Host = 'smtp.gmail.com';
+			$mail->SMTPAuth = true;
+			$mail->SMTPDebug = 2;
+			$mail->Username = 'genalpha.id@gmail.com';
+			$mail->Password = 'GenAlpha123';
+			$mail->SMTPSecure = 'ssl';
+			$mail->Port = 465;
+			$mail->setFrom('genalpha.id@gmail.com', 'GenAlpha');
+			$mail->addAddress($to, '');
+			$mail->isHTML(true);
+			for ($i=0; $i<sizeof($attachments); $i++) {
+				$attachment = $attachments[$i];
+				$mail->addAttachment($attachment);
+			}
 			$mail->Subject = $subject;
 			$mail->Body = $content;
 			if (!$mail->send()) {
