@@ -265,4 +265,8 @@ class Test extends CI_Controller {
 			$this->db->query("INSERT INTO `job_benefits` (`job_id`, `benefit`) VALUES (" . $i . ", 'Tunjangan transportasi, tunjangan makan, tunjangan anak, BPJS ketenagakerjaan.')");
 		}
 	}
+	
+	public function o() {
+		echo strtotime('2020-11-10 00:00:00');
+	}
 }

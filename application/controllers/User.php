@@ -459,7 +459,24 @@ class User extends CI_Controller {
 	
 	public function get_skills() {
 		$userID = intval($this->input->post('user_id'));
-		echo json_encode($this->db->query("SELECT * FROM `skills`")->result_array());
+		$skills = [];
+		$commonSkills = $this->db->query("SELECT * FROM `skills` WHERE `user_id`=" . $userID . " AND `type`='common'")->result_array();
+		$specialistSkills = $this->db->query("SELECT * FROM `skills` WHERE `user_id`=" . $userID . " AND `type`='specialist'")->result_array();
+		array_push($skills, array(
+			'type' => 'common',
+			'skills' => $commonSkills
+		));
+		array_push($skills, array(
+			'type' => 'specialist',
+			'skills' => $specialistSkills
+		));
+		echo json_encode($skills);
+	}
+	
+	public function get_skills_by_type() {
+		$userID = intval($this->input->post('user_id'));
+		$type = $this->input->post('type');
+		echo json_encode($this->db->query("SELECT * FROM `skills` WHERE `user_id`=" . $userID . " AND `type`='" . $type . "'")->result_array());
 	}
 	
 	public function get_skill_by_id() {
@@ -469,24 +486,27 @@ class User extends CI_Controller {
 	
 	public function add_skill() {
 		$userID = intval($this->input->post('user_id'));
+		$type = $this->input->post('type');
 		$skill = $this->input->post('skill');
-		$level = $this->input->post('level');
 		$this->db->insert('skills', array(
 			'user_id' => $userID,
-			'skill' => $skill,
-			'level' => $level
+			'type' => $type,
+			'skill' => $skill
 		));
 	}
 	
-	public function update_skill() {
-		$id = intval($this->input->post('id'));
-		$skill = $this->input->post('skill');
-		$level = $this->input->post('level');
-		$this->db->where('id', $id);
-		$this->db->update('skills', array(
-			'skill' => $skill,
-			'level' => $level
-		));
+	public function update_skills() {
+		$userID = intval($this->input->post('user_id'));
+		$type = $this->input->post('type');
+		$skills = json_decode($this->input->post('skills'), true);
+		$this->db->query("DELETE FROM `skills` WHERE `user_id`=" . $userID . " AND `type`='" . $type . "'");
+		for ($i=0; $i<sizeof($skills); $i++) {
+			$this->db->insert('skills', array(
+				'user_id' => $userID,
+				'type' => $type,
+				'skill' => $skills[$i]['skill']
+			));
+		}
 	}
 	
 	public function delete_skill_by_id() {
@@ -1053,5 +1073,46 @@ class User extends CI_Controller {
 		$userID = intval($this->input->post('user_id'));
 		$fcmID = $this->input->post('fcm_id');
 		$this->db->query("UPDATE `users` SET `fcm_id`='" . $fcmID . "' WHERE `id`=" . $userID);
+	}
+	
+	public function get_profile_info() {
+		$userID = intval($this->input->post('user_id'));
+		$user = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $userID)->row_array();
+		$employees = $this->db->query("SELECT * FROM `employees` WHERE `user_id`=" . $userID)->result_array();
+		$totalWorkExperience = 0;
+		for ($i=0; $i<sizeof($employees); $i++) {
+			$workingStart = $employees[$i]['date'];
+			$workingEnd = $employees[$i]['date_out'];
+			if ($workingEnd == NULL || $workingEnd.trim() == "null" || $workingEnd.trim() == "NULL") {
+				$workingEnd = date("Y-m-d H:i:s");
+			}
+			$totalWorkExperience += (strtotime($workingEnd)-strtotime($workingStart));
+		}
+		$user['total_work_experience'] = $totalWorkExperience;
+		$currentJobID = intval($user['current_job_id']);
+		if ($currentJobID != 0) {
+			$user['current_job'] = $this->db->query("SELECT * FROM `jobs` WHERE `id`=" . $currentJobID)->row_array();
+		} else {
+			$user['current_job'] = NULL;
+		}
+		$user['educations'] = $this->db->query("SELECT * FROM `educations` WHERE `user_id`=" . $userID)->result_array();
+		echo json_encode($user);
+	}
+	
+	public function check_password() {
+		$userID = intval($this->input->post('user_id'));
+		$password = $this->input->post('password');
+		$user = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $userID)->row_array();
+		if ($user['password'] == $password) {
+			echo 1;
+		} else {
+			echo -1;
+		}
+	}
+	
+	public function change_password() {
+		$userID = intval($this->input->post('user_id'));
+		$password = $this->input->post('password');
+		$this->db->query("UPDATE `users` SET `password`='" . $password . "' WHERE `id`=" . $userID);
 	}
 }
