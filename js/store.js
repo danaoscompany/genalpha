@@ -31,7 +31,7 @@ function getStores() {
 
 function editStore(index) {
 	var store = stores[index];
-	$.redirect('http://localhost/admin/store/edit', {
+	$.redirect('http://genalpha.id/admin/store/edit', {
 		'id': parseInt(store['id'])
 	});
 }
@@ -49,7 +49,7 @@ function deleteStore(index) {
 			contentType: false,
 			cache: false,
 			success: function(response) {
-				window.location.href = "http://localhost/admin/store";
+				window.location.href = "http://genalpha.id/admin/store";
 			}
 		});
 	}

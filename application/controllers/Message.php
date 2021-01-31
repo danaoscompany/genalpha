@@ -9,7 +9,7 @@ class Message extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -22,10 +22,10 @@ class Message extends CI_Controller {
 					'adminID' => $adminID
 				));
 			} else {
-				header('Location: http://localhost/admin/message');
+				header('Location: http://genalpha.id/admin/message');
 			}
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -40,10 +40,10 @@ class Message extends CI_Controller {
 					'messageID' => $messageID
 				));
 			} else {
-				header('Location: http://localhost/admin/message');
+				header('Location: http://genalpha.id/admin/message');
 			}
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 }

@@ -9,7 +9,7 @@ class Product extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -22,7 +22,7 @@ class Product extends CI_Controller {
 				'productCode' => $productCode
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -35,10 +35,10 @@ class Product extends CI_Controller {
 					'adminID' => $adminID
 				));
 			} else {
-				header('Location: http://localhost/admin/product');
+				header('Location: http://genalpha.id/admin/product');
 			}
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -53,10 +53,10 @@ class Product extends CI_Controller {
 					'productID' => $productID
 				));
 			} else {
-				header('Location: http://localhost/admin/product');
+				header('Location: http://genalpha.id/admin/product');
 			}
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 }

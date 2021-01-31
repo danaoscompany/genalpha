@@ -1,4 +1,4 @@
-const HOST = "localhost/admin";
+const HOST = "genalpha.id/admin";
 const PHP_URL = "http://"+HOST;
 const USERDATA_URL = "http://"+HOST+"/userdata/";
 const SYSTEMDATA_URL = "http://"+HOST+"/systemdata/";
@@ -59,7 +59,7 @@ function uuidv4() {
 
 function logout() {
 	if (confirm("Apakah Anda yakin ingin keluar?")) {
-		window.location.href = "http://localhost/admin/logout";
+		window.location.href = "http://genalpha.id/admin/logout";
 	}
 }
 

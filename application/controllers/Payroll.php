@@ -9,7 +9,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -20,7 +20,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -31,7 +31,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -44,7 +44,7 @@ class Payroll extends CI_Controller {
 				'id' => $id
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -55,7 +55,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -74,7 +74,88 @@ class Payroll extends CI_Controller {
 				'month' => $month
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
+		}
+	}
+
+	public function report() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$this->load->view('payroll/report', array(
+				'adminID' => $adminID
+			));
+		} else {
+			header('Location: http://genalpha.id/admin/login');
+		}
+	}
+
+	public function report_list() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$category = $this->input->get('category');
+			$this->load->view('payroll/report_list', array(
+				'adminID' => $adminID,
+				'category' => $category
+			));
+		} else {
+			header('Location: http://genalpha.id/admin/login');
+		}
+	}
+
+	public function run_thr() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$this->load->view('payroll/run_thr', array(
+				'adminID' => $adminID
+			));
+		} else {
+			header('Location: http://genalpha.id/admin/login');
+		}
+	}
+
+	public function bpjs_rate() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$this->load->view('payroll/bpjs_rate', array(
+				'adminID' => $adminID
+			));
+		} else {
+			header('Location: http://genalpha.id/admin/login');
+		}
+	}
+
+	public function ex_employees() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$this->load->view('payroll/ex_employees', array(
+				'adminID' => $adminID
+			));
+		} else {
+			header('Location: http://genalpha.id/admin/login');
+		}
+	}
+
+	public function add_ex_employee() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$this->load->view('payroll/add_ex_employee', array(
+				'adminID' => $adminID
+			));
+		} else {
+			header('Location: http://genalpha.id/admin/login');
+		}
+	}
+
+	public function edit_ex_employee() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$id = intval($this->input->post('id'));
+			$this->load->view('payroll/edit_ex_employee', array(
+				'adminID' => $adminID,
+				'ex_employee_id' => $id
+			));
+		} else {
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 }

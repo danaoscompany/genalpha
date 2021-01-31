@@ -25,9 +25,9 @@ function login() {
 			localStorage.setItem("user_id", ""+userID);
 			if (responseCode == 1) {
 				if (userRole == 'superadmin') {
-					window.location.href = "http://localhost/admin/user";
+					window.location.href = "http://genalpha.id/admin/user";
 				} else if (userRole == 'employer') {
-					window.location.href = "http://localhost/admin/job";
+					window.location.href = "http://genalpha.id/admin/job";
 				}
 			} else if (responseCode == -1) {
 				alert("Email atau kata sandi yang Anda masukkan salah.");

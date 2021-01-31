@@ -12,7 +12,7 @@ class Employer extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -25,7 +25,7 @@ class Employer extends CI_Controller {
 				'employerID' => $employerID
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 	
@@ -79,6 +79,12 @@ class Employer extends CI_Controller {
 		$employee['experience'] = $this->db->query("SELECT * FROM `experiences` WHERE `user_id`=" . $employee['user_id'])->row_array();
 		echo json_encode($employee);
 	}
+
+	public function get_employer_by_id() {
+		$id = intval($this->input->post('id'));
+		$this->db->where('id', $id);
+		echo json_encode($this->db->get('employers')->row_array());
+	}
 	
 	public function get_employees() {
 		$employerID = intval($this->input->post('employer_id'));
@@ -89,7 +95,23 @@ class Employer extends CI_Controller {
 		}
 		echo json_encode($employees);
 	}
-	
+
+	public function get_resigned_employees() {
+		$employerID = intval($this->input->post('employer_id'));
+		$employees = $this->db->query("SELECT * FROM `employees` WHERE `employer_id`=" . $employerID . " AND `date_out` IS NOT NULL")->result_array();
+		for ($i=0; $i<sizeof($employees); $i++) {
+			$employees[$i]['user'] = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $employees[$i]['user_id'])->row_array();
+			$employees[$i]['job'] = $this->db->query("SELECT * FROM `jobs` WHERE `id`=" . $employees[$i]['job_id'])->row_array();
+		}
+		echo json_encode($employees);
+	}
+
+	public function get_ex_employees() {
+		$employerID = intval($this->input->post('employer_id'));
+		$employees = $this->db->query("SELECT * FROM `ex_employees` WHERE `employer_id`=" . $employerID)->result_array();
+		echo json_encode($employees);
+	}
+
 	public function get_employee_resume() {
 		$userID = intval($this->input->post('user_id'));
 		$user = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $userID)->row_array();
@@ -873,5 +895,116 @@ class Employer extends CI_Controller {
 			}
 		}
 		echo json_encode($chats);
+	}
+
+	public function get_reports() {
+		$employerID = intval($this->input->post('employer_id'));
+		$category = $this->input->post('category');
+		echo json_encode($this->db->query("SELECT * FROM `reports` WHERE `employer_id`=" . $employerID . " AND `category`='" . $category . "'")->result_array());
+	}
+
+	public function add_ex_employee() {
+		$employerID = intval($this->input->post('employer_id'));
+		$description = $this->input->post('description');
+		$month = intval($this->input->post('month'));
+		$year = intval($this->input->post('year'));
+		$numEmployees = intval($this->input->post('num_employees'));
+		$taxable = intval($this->input->post('taxable'));
+		$employees = json_decode($this->input->post('employees'), true);
+		$amounts = json_decode($this->input->post('amounts'), true);
+		$transactionID = "" . $year . sprintf('%02d', $month);
+		$exEmployees = $this->db->query("SELECT * FROM `ex_employees` WHERE `transaction_id` LIKE '" . $transactionID . "%'")->result_array();
+		if (sizeof($exEmployees) > 0) {
+			$exEmployee = $exEmployees[0];
+			$lastTransactionID = $exEmployee['transaction_id'];
+			$lastTransactionID = str_replace($transactionID, '', $lastTransactionID);
+			$lastTransactionID = intval($lastTransactionID)+1;
+			$transactionID = $transactionID . sprintf('%03d', $lastTransactionID);
+		} else {
+			$transactionID .= "001";
+		}
+		$this->db->insert('ex_employees', array(
+			'transaction_id' => $transactionID,
+			'employer_id' => $employerID,
+			'description' => $description,
+			'month' => $month,
+			'year' => $year,
+			'num_employees' => $numEmployees,
+			'taxable' => $taxable
+		));
+		$lastExEmployeeID = intval($this->db->insert_id());
+		for ($i=0; $i<sizeof($employees); $i++) {
+			$employee = $employees[$i];
+			$this->db->insert('ex_employee_allowances', array(
+				'ex_employee_id' => $lastExEmployeeID,
+				'employee_id' => intval($employee['id']),
+				'amount' => doubleval($amounts[$i])
+			));
+		}
+	}
+
+	public function update_ex_employee() {
+		$id = intval($this->input->post('id'));
+		$employerID = intval($this->input->post('employer_id'));
+		$this->db->query("DELETE FROM `ex_employee_allowances` WHERE `ex_employee_id`=" . $id);
+		$this->db->query("DELETE FROM `ex_employees` WHERE `id`=" . $id);
+		$description = $this->input->post('description');
+		$month = intval($this->input->post('month'));
+		$year = intval($this->input->post('year'));
+		$numEmployees = intval($this->input->post('num_employees'));
+		$taxable = intval($this->input->post('taxable'));
+		$employees = json_decode($this->input->post('employees'), true);
+		$amounts = json_decode($this->input->post('amounts'), true);
+		$transactionID = "" . $year . sprintf('%02d', $month);
+		$exEmployees = $this->db->query("SELECT * FROM `ex_employees` WHERE `transaction_id` LIKE '" . $transactionID . "%'")->result_array();
+		if (sizeof($exEmployees) > 0) {
+			$exEmployee = $exEmployees[0];
+			$lastTransactionID = $exEmployee['transaction_id'];
+			$lastTransactionID = str_replace($transactionID, '', $lastTransactionID);
+			$lastTransactionID = intval($lastTransactionID)+1;
+			$transactionID = $transactionID . sprintf('%03d', $lastTransactionID);
+		} else {
+			$transactionID .= "001";
+		}
+		$this->db->insert('ex_employees', array(
+			'transaction_id' => $transactionID,
+			'employer_id' => $employerID,
+			'description' => $description,
+			'month' => $month,
+			'year' => $year,
+			'num_employees' => $numEmployees,
+			'taxable' => $taxable
+		));
+		$lastExEmployeeID = intval($this->db->insert_id());
+		for ($i=0; $i<sizeof($employees); $i++) {
+			$employee = $employees[$i];
+			$this->db->insert('ex_employee_allowances', array(
+				'ex_employee_id' => $lastExEmployeeID,
+				'employee_id' => intval($employee['id']),
+				'amount' => doubleval($amounts[$i])
+			));
+		}
+	}
+
+	public function delete_ex_employee() {
+		$id = intval($this->input->post('id'));
+		$this->db->query("DELETE FROM `ex_employee_allowances` WHERE `ex_employee_id`=" . $id);
+		$this->db->query("DELETE FROM `ex_employees` WHERE `id`=" . $id);
+	}
+
+	public function get_ex_employee_by_id() {
+		$id = intval($this->input->post('id'));
+		$exEmployee = $this->db->query("SELECT * FROM `ex_employees` WHERE `id`=" . $id)->row_array();
+		$employees = [];
+		$exEmployeeAllowances = $this->db->query("SELECT * FROM `ex_employee_allowances` WHERE `ex_employee_id`=" . $id)->result_array();
+		for ($i=0; $i<sizeof($exEmployeeAllowances); $i++) {
+			$exEmployeeAllowance = $exEmployeeAllowances[$i];
+			$employee = $this->db->query("SELECT * FROM `employees` WHERE `id`=" . $exEmployeeAllowance['employee_id'])->row_array();
+			$employee['user'] = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $employee['user_id'])->row_array();
+			array_push($employees, $employee);
+		}
+		$exEmployee['employees'] = $employees;
+		$exEmployee['ex_employee_allowances'] = $exEmployeeAllowances;
+		echo json_encode($exEmployee);
 	}
 }

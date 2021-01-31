@@ -34,13 +34,13 @@ function save() {
 		contentType: false,
 		cache: false,
 		success: function(response) {
-			window.location.href = "http://localhost/admin/settings";
+			window.location.href = "http://genalpha.id/admin/settings";
 		}
 	});
 }
 
 function cancel() {
 	if (confirm("Apakah Anda yakin ingin membatalkan perubahan?")) {
-		window.location.href='http://localhost/admin/settings';
+		window.location.href='http://genalpha.id/admin/settings';
 	}
 }
