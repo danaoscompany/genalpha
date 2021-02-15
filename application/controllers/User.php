@@ -1115,4 +1115,34 @@ class User extends CI_Controller {
 		$password = $this->input->post('password');
 		$this->db->query("UPDATE `users` SET `password`='" . $password . "' WHERE `id`=" . $userID);
 	}
+	
+	public function get_working_records() {
+		$startDate = $this->input->post('start_date');
+		$endDate = $this->input->post('end_date');
+		$startDate = DateTime::createFromFormat('Y-m-d', $startDate);
+		$endDate = DateTime::createFromFormat('Y-m-d', $endDate);
+		$diff = $startDate->diff($endDate);
+		$totalDays = intval($diff->format('%r%a'));
+		$totalWorkingDays = 0;
+		while (true) {
+			$diff = $startDate->diff($endDate);
+		   	$diffDays = intval($diff->format('%r%a'));
+		   	if ($diffDays <= 0) {
+		   		break;
+		   	}
+		   	$come = $this->db->query("SELECT * FROM `attendances` WHERE `type`='come' AND DATE(`date`)='" . $startDate->format('Y-m-d') . "'")
+		   		->num_rows();
+		   	$leave = $this->db->query("SELECT * FROM `attendances` WHERE `type`='leave' AND DATE(`date`)='" . $startDate->format('Y-m-d') . "'")
+		   		->num_rows();
+		   	if ($come > 0 && $leave > 0 && $come == $leave) {
+		   		$totalWorkingDays++;
+		   	}
+		   	$startDate->modify('+1 day');
+		}
+		echo json_encode(array(
+			'total_days' => $totalDays,
+			'total_working_days' => $totalWorkingDays,
+			'total_not_working_days' => $totalDays-$totalWorkingDays
+		));
+	}
 }

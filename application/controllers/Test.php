@@ -77,7 +77,8 @@ class Test extends CI_Controller {
 	public function b() {
 		for ($j=1; $j<=10; $j++) {
 			for ($i=0; $i<30; $i++) {
-				$this->db->query("INSERT INTO `attendances` (`id`, `user_id`, `job_id`, `picture`, `note`, `lat`, `lng`, `location`, `date`) VALUES (NULL, " . $j . ", '1', '92a379ad-3ef1-4692-989d-4c838fcab1e7', 'Sedang makan siang', '-6.2088', '106.8456', 'Jakarta, Indonesia', DATE_ADD(NOW(), INTERVAL -" . $i . " DAY)) ");
+				$this->db->query("INSERT INTO `attendances` (`id`, `user_id`, `job_id`, `picture`, `note`, `lat`, `lng`, `location`, `type`, `date`) VALUES (NULL, " . $j . ", '1', '92a379ad-3ef1-4692-989d-4c838fcab1e7', 'Sedang makan siang', '-6.2088', '106.8456', 'Jakarta, Indonesia', 'come', DATE_ADD(NOW(), INTERVAL -" . $i . " DAY)) ");
+				$this->db->query("INSERT INTO `attendances` (`id`, `user_id`, `job_id`, `picture`, `note`, `lat`, `lng`, `location`, `type`, `date`) VALUES (NULL, " . $j . ", '1', '92a379ad-3ef1-4692-989d-4c838fcab1e7', 'Sedang makan siang', '-6.2088', '106.8456', 'Jakarta, Indonesia', 'leave', DATE_ADD(NOW(), INTERVAL -" . $i . " DAY)) ");
 			}
 		}
 	}
@@ -268,5 +269,13 @@ class Test extends CI_Controller {
 	
 	public function o() {
 		echo strtotime('2020-11-10 00:00:00');
+	}
+	
+	public function p() {
+		$dStart = new DateTime('2012-07-26');
+	   	$dEnd  = new DateTime('2012-07-26');
+	   	$dEnd->modify('+1 day');
+	   	$dDiff = $dStart->diff($dEnd);
+	   	echo $dDiff->format('%r%a');
 	}
 }
