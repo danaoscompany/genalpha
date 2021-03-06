@@ -9,7 +9,7 @@ class Job extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -22,7 +22,7 @@ class Job extends CI_Controller {
 				'jobID' => $jobID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 }

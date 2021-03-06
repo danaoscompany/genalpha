@@ -277,5 +277,5 @@ async function runPayroll() {
 			});
 	}
 	$("#loading-bar-container").fadeOut(300);
-	window.location.href = "http://genalpha.id/admin/payroll";
+	window.location.href = "http://localhost/admin/payroll";
 }

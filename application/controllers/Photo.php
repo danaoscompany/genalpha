@@ -11,7 +11,7 @@ class Photo extends CI_Controller {
 				'url' => $url
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 }

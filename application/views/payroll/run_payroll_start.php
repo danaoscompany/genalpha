@@ -13,13 +13,13 @@
 		  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
 	<meta name="description" content="Tables are the backbone of almost all web applications.">
 	<meta name="msapplication-tap-highlight" content="no">
-	<script src="http://genalpha.id/admin/js/jquery.js"></script>
-	<script src="http://genalpha.id/admin/js/global.js"></script>
-	<script src="http://genalpha.id/admin/js/jquery.redirect.js"></script>
-	<script src="http://genalpha.id/admin/js/moment.js"></script>
+	<script src="http://localhost/admin/js/jquery.js"></script>
+	<script src="http://localhost/admin/js/global.js"></script>
+	<script src="http://localhost/admin/js/jquery.redirect.js"></script>
+	<script src="http://localhost/admin/js/moment.js"></script>
 	<script src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
-	<script src="http://genalpha.id/admin/js/payroll_run_payroll_start.js"></script>
-	<script src="http://genalpha.id/admin/js/loading-bar.js"></script>
+	<script src="http://localhost/admin/js/payroll_run_payroll_start.js"></script>
+	<script src="http://localhost/admin/js/loading-bar.js"></script>
 	<!--
 	=========================================================
 	* ArchitectUI HTML Theme Dashboard - v1.0.0
@@ -30,14 +30,14 @@
 	=========================================================
 	* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 	-->
-	<link href="http://genalpha.id/admin/main.css" rel="stylesheet">
-	<link href="http://genalpha.id/admin/css/loading-bar.css" rel="stylesheet">
+	<link href="http://localhost/admin/main.css" rel="stylesheet">
+	<link href="http://localhost/admin/css/loading-bar.css" rel="stylesheet">
 </head>
 <body>
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
 	<div class="app-header header-shadow">
 		<div class="app-header__logo">
-			<img src="http://genalpha.id/admin/assets/images/icon.png" width="30px" height="30px">
+			<img src="http://localhost/admin/assets/images/icon.png" width="30px" height="30px">
 			<div class="header__pane ml-auto">
 				<div>
 					<button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
@@ -78,7 +78,7 @@
 								<div class="btn-group">
 									<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 									   class="p-0 btn">
-										<img width="42" height="42" class="rounded-circle" src="http://genalpha.id/admin/images/profile_picture.png" alt="" style="border-radius: 21;">
+										<img width="42" height="42" class="rounded-circle" src="http://localhost/admin/images/profile_picture.png" alt="" style="border-radius: 21;">
 										<i class="fa fa-angle-down ml-2 opacity-8"></i>
 									</a>
 									<div tabindex="-1" role="menu" aria-hidden="true"
@@ -102,7 +102,7 @@
 	<div class="app-main">
 		<div class="app-sidebar sidebar-shadow">
 			<div class="app-header__logo">
-				<img src="http://genalpha.id/admin/assets/images/icon.png" width="30px" height="30px">
+				<img src="http://localhost/admin/assets/images/icon.png" width="30px" height="30px">
 				<div class="header__pane ml-auto">
 					<div>
 						<button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
@@ -288,6 +288,6 @@
 <input type="hidden" id="date" value="<?php echo $date; ?>">
 <input type="hidden" id="year" value="<?php echo $year; ?>">
 <input type="hidden" id="month" value="<?php echo $month; ?>">
-<script type="text/javascript" src="http://genalpha.id/admin/assets/scripts/main.js"></script>
+<script type="text/javascript" src="http://localhost/admin/assets/scripts/main.js"></script>
 </body>
 </html>

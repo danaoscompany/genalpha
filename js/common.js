@@ -41,7 +41,7 @@ function save() {
 		contentType: false,
 		cache: false,
 		success: function (response) {
-			window.location.href = "http://genalpha.id/admin/common";
+			window.location.href = "http://localhost/admin/common";
 		}
 	});
 }

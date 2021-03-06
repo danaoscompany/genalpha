@@ -4,9 +4,9 @@ class Main extends CI_Controller {
 
 	public function index() {
 		if ($this->session->logged_in == 1) {
-			header('Location: http://genalpha.id/admin/user');
+			header('Location: http://localhost/admin/user');
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 }

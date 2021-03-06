@@ -9,7 +9,7 @@ class Pdf extends CI_Controller {
 				'pdfURL' => $pdfURL
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 }

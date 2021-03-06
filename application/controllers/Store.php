@@ -9,7 +9,7 @@ class Store extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -22,10 +22,10 @@ class Store extends CI_Controller {
 					'adminID' => $adminID
 				));
 			} else {
-				header('Location: http://genalpha.id/admin/store');
+				header('Location: http://localhost/admin/store');
 			}
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -40,10 +40,10 @@ class Store extends CI_Controller {
 					'storeID' => $storeID
 				));
 			} else {
-				header('Location: http://genalpha.id/admin/store');
+				header('Location: http://localhost/admin/store');
 			}
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 }

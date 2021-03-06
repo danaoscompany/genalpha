@@ -25,7 +25,7 @@ $(document).ready(function() {
 			anchorXUnits: 'fraction',
 			anchorYUnits: 'pixels',
 			opacity: 0.75,
-			src: 'http://genalpha.id/admin/userdata/system/map.png'
+			src: 'http://localhost/admin/userdata/system/map.png'
 		}))
 	});
 	feature.setStyle(iconStyle);
@@ -103,7 +103,7 @@ function add() {
 		contentType: false,
 		cache: false,
 		success: function(response) {
-			window.location.href = "http://genalpha.id/admin/store";
+			window.location.href = "http://localhost/admin/store";
 		}
 	});
 }

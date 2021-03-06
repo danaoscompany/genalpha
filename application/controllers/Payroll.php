@@ -9,7 +9,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -20,7 +20,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -31,7 +31,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -44,7 +44,7 @@ class Payroll extends CI_Controller {
 				'id' => $id
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -55,7 +55,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -74,7 +74,7 @@ class Payroll extends CI_Controller {
 				'month' => $month
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -85,7 +85,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -98,7 +98,7 @@ class Payroll extends CI_Controller {
 				'category' => $category
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -109,7 +109,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -120,7 +120,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -131,7 +131,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -142,7 +142,7 @@ class Payroll extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -155,7 +155,51 @@ class Payroll extends CI_Controller {
 				'ex_employee_id' => $id
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
+		}
+	}
+
+	public function settings() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$this->load->view('payroll/settings', array(
+				'adminID' => $adminID
+			));
+		} else {
+			header('Location: http://localhost/admin/login');
+		}
+	}
+
+	public function settings_account_preferences() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$this->load->view('payroll/settings/account_preferences', array(
+				'adminID' => $adminID
+			));
+		} else {
+			header('Location: http://localhost/admin/login');
+		}
+	}
+
+	public function settings_account_preferences_profile_picture() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$this->load->view('payroll/settings/account_preferences/profile_picture', array(
+				'adminID' => $adminID
+			));
+		} else {
+			header('Location: http://localhost/admin/login');
+		}
+	}
+
+	public function settings_account_preferences_change_password() {
+		if ($this->session->logged_in == 1) {
+			$adminID = $this->session->user_id;
+			$this->load->view('payroll/settings/account_preferences/change_password', array(
+				'adminID' => $adminID
+			));
+		} else {
+			header('Location: http://localhost/admin/login');
 		}
 	}
 }

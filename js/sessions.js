@@ -89,7 +89,7 @@ function getSessions(userID) {
 }
 
 function editSession(index) {
-	$.redirect('http://genalpha.id/admin/sessions/edit', {
+	$.redirect('http://localhost/admin/sessions/edit', {
 		'uuid': sessions[index]['uuid']
 	});
 }

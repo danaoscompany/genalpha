@@ -48,7 +48,7 @@ function searchEmployer() {
 					"\t\t\t\t\tbackground-color: rgba(136, 136, 136, .3)\" />\n" +
 					"\t\t\t\t<div style=\"width: 100%; display: flex; flex-direction: row; align-items: center; margin-top: 16px;\">\n" +
 					"\t\t\t\t\t<img src=\""+(employer["profile_picture"]==null||employer["profile_picture"].trim()==""
-						?"http://genalpha.id/admin/systemdata/profile_picture_placeholder.png"
+						?"http://localhost/admin/systemdata/profile_picture_placeholder.png"
 						:USERDATA_URL+employer["profile_picture"].trim())+"\"\n" +
 					"\t\t\t\t\t\t width=\"50px\" height=\"50px\" style=\"margin-left: 8px; border-radius: 25px;\">\n" +
 					"\t\t\t\t\t<div style=\"display: flex; flex-direction: row; justify-content: space-between;\n" +
@@ -89,7 +89,7 @@ function searchJob() {
 					"\t\t\t\t\tbackground-color: rgba(136, 136, 136, .3)\" />\n" +
 					"\t\t\t\t<div style=\"width: 100%; display: flex; flex-direction: row; align-items: center; margin-top: 16px;\">\n" +
 					"\t\t\t\t\t<img src=\""+(job["logo"]==null||job["logo"].trim()==""
-						?"http://genalpha.id/admin/systemdata/profile_picture_placeholder.png"
+						?"http://localhost/admin/systemdata/profile_picture_placeholder.png"
 						:USERDATA_URL+job["logo"].trim())+"\"\n" +
 					"\t\t\t\t\t\t width=\"50px\" height=\"50px\" style=\"margin-left: 8px; border-radius: 25px;\">\n" +
 					"\t\t\t\t\t<div style=\"display: flex; flex-direction: row; justify-content: space-between;\n" +
@@ -127,7 +127,7 @@ function searchEmployee() {
 					"\t\t\t\t\tbackground-color: rgba(136, 136, 136, .3)\" />\n" +
 					"\t\t\t\t<div style=\"width: 100%; display: flex; flex-direction: row; align-items: center; margin-top: 16px;\">\n" +
 					"\t\t\t\t\t<img src=\""+(employee['user']["profile_picture"]==null||employee['user']["profile_picture"].trim()==""
-						?"http://genalpha.id/admin/systemdata/profile_picture_placeholder.png"
+						?"http://localhost/admin/systemdata/profile_picture_placeholder.png"
 						:USERDATA_URL+employee['user']["profile_picture"].trim())+"\"\n" +
 					"\t\t\t\t\t\t width=\"50px\" height=\"50px\" style=\"margin-left: 8px; border-radius: 25px;\">\n" +
 					"\t\t\t\t\t<div style=\"display: flex; flex-direction: row; justify-content: space-between;\n" +

@@ -12,7 +12,7 @@ class Employer extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 
@@ -25,7 +25,7 @@ class Employer extends CI_Controller {
 				'employerID' => $employerID
 			));
 		} else {
-			header('Location: http://genalpha.id/admin/login');
+			header('Location: http://localhost/admin/login');
 		}
 	}
 	
@@ -61,6 +61,18 @@ class Employer extends CI_Controller {
 		$userID = intval($this->input->post('user_id'));
 		$jobID = intval($this->input->post('job_id'));
 		$applicants = $this->db->query("SELECT * FROM `employees` WHERE `user_id`=" . $userID . " AND `job_id`=" . $jobID)->result_array();
+		for ($i=0; $i<sizeof($applicants); $i++) {
+			$applicants[$i]['user'] = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $applicants[$i]['user_id'])->row_array();
+			$applicants[$i]['job'] = $this->db->query("SELECT * FROM `jobs` WHERE `id`=" . $applicants[$i]['job_id'])->row_array();
+			$applicants[$i]['experience'] = $this->db->query("SELECT * FROM `experiences` WHERE `user_id`=" . $applicants[$i]['user_id'])->row_array();
+		}
+		echo json_encode($applicants);
+	}
+	
+	public function get_applicants_by_employer_id() {
+		$employerID = intval($this->input->post('employer_id'));
+		$jobID = intval($this->input->post('job_id'));
+		$applicants = $this->db->query("SELECT * FROM `employees` WHERE `employer_id`=" . $employerID . " AND `job_id`=" . $jobID)->result_array();
 		for ($i=0; $i<sizeof($applicants); $i++) {
 			$applicants[$i]['user'] = $this->db->query("SELECT * FROM `users` WHERE `id`=" . $applicants[$i]['user_id'])->row_array();
 			$applicants[$i]['job'] = $this->db->query("SELECT * FROM `jobs` WHERE `id`=" . $applicants[$i]['job_id'])->row_array();
@@ -1006,5 +1018,45 @@ class Employer extends CI_Controller {
 		$exEmployee['employees'] = $employees;
 		$exEmployee['ex_employee_allowances'] = $exEmployeeAllowances;
 		echo json_encode($exEmployee);
+	}
+
+	public function update_profile_picture() {
+		$id = intval($this->input->post('id'));
+		$config['upload_path']          = './userdata/';
+		$config['allowed_types']        = '*';
+		$config['max_size']             = 2147483647;
+		$config['file_name']            = Util::generateUUIDv4();
+		$this->load->library('upload', $config);
+		if ($this->upload->do_upload('file')) {
+			$this->db->where('id', $id);
+			$this->db->update('employers', array(
+				'profile_picture' => $this->upload->data()['file_name']
+			));
+		} else {
+			echo json_encode($this->upload->display_errors());
+		}
+	}
+
+	public function update_password() {
+		$id = intval($this->input->post('id'));
+		$oldPassword = $this->input->post('old_password');
+		$newPassword = $this->input->post('new_password');
+		$user = $this->db->query("SELECT * FROM `employers` WHERE `id`=" . $id)->row_array();
+		if ($user['password'] != $oldPassword) {
+			echo json_encode(array(
+				'response_code' => -1
+			));
+		} else {
+			$this->db->query("UPDATE `employers` SET `password`='" . $newPassword . "' WHERE `id`=" . $id);
+			echo json_encode(array(
+				'response_code' => 1
+			));
+		}
+	}
+	
+	public function get_offshore_jobs() {
+		$employerID = intval($this->input->post('employer_id'));
+		$jobs = $this->db->query("SELECT * FROM `jobs` WHERE `employer_id`=" . $employerID . " AND `is_offshore`=1 ORDER BY `job_title`")->result_array();
+		echo json_encode($jobs);
 	}
 }

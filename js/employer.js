@@ -48,21 +48,21 @@ function getEmployers() {
 
 function viewDevices(index) {
 	var user = users[index];
-	$.redirect("http://genalpha.id/admin/devices", {
+	$.redirect("http://localhost/admin/devices", {
 		id: parseInt(user['id'])
 	});
 }
 
 function viewPatients(index) {
 	var user = users[index];
-	$.redirect("http://genalpha.id/admin/patients", {
+	$.redirect("http://localhost/admin/patients", {
 		id: parseInt(user['id'])
 	});
 }
 
 function viewUser(index) {
 	var user = users[index];
-	$.redirect("http://genalpha.id/admin/employer/view", {
+	$.redirect("http://localhost/admin/employer/view", {
 		'employer_id': parseInt(user['id'])
 	});
 }

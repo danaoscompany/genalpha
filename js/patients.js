@@ -107,19 +107,19 @@ function getPatients(id) {
 }
 
 function viewImages(index) {
-	window.location.href = "http://genalpha.id/admin/image";
+	window.location.href = "http://localhost/admin/image";
 }
 
 function viewDevices(index) {
-	window.location.href = "http://genalpha.id/admin/devices?id="+patients[index]['id'];
+	window.location.href = "http://localhost/admin/devices?id="+patients[index]['id'];
 }
 
 function viewPatients(index) {
-	window.location.href = "http://genalpha.id/admin/patients?id="+patients[index]['id'];
+	window.location.href = "http://localhost/admin/patients?id="+patients[index]['id'];
 }
 
 function editPatient(index) {
-	$.redirect("http://genalpha.id/admin/patients/edit", {
+	$.redirect("http://localhost/admin/patients/edit", {
 		'id': parseInt(patients[index]['id']),
 		'uuid': patients[index]['uuid'],
 		'user_id': parseInt(patients[index]['user_id'])

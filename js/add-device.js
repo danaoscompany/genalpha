@@ -42,7 +42,7 @@ function addDevice() {
 		contentType: false,
 		cache: false,
 		success: function(response) {
-			$.redirect("http://genalpha.id/admin/devices", {
+			$.redirect("http://localhost/admin/devices", {
 				id: userID
 			});
 		}

@@ -39,7 +39,7 @@ $(document).ready(function() {
 			anchorXUnits: 'fraction',
 			anchorYUnits: 'pixels',
 			opacity: 0.75,
-			src: 'http://genalpha.id/admin/userdata/system/map.png'
+			src: 'http://localhost/admin/userdata/system/map.png'
 		}))
 	});
 	feature.setStyle(iconStyle);

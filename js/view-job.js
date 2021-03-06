@@ -114,7 +114,7 @@ function getJobDocuments() {
 					"\t\t\t\t\t\t\t\t\t\t\t\t\tpadding-right: 24px;\">\n" +
 					"\t\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"display: flex; flex-direction: row;\n" +
 					"\t\t\t\t\t\t\t\t\t\t\t\t\t\talign-items: center;\">\n" +
-					"\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img src=\"http://genalpha.id/admin/systemdata/pdf.png\"\n" +
+					"\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img src=\"http://localhost/admin/systemdata/pdf.png\"\n" +
 					"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t width=\"30px\" height=\"30px\">\n" +
 					"\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"color: #000000; font-size: 15px; margin-left: 16px;\">\n" +
 					"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"+document['title']+"\n" +

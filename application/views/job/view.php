@@ -11,10 +11,10 @@
 		  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"/>
 	<meta name="description" content="Build whatever layout you need with our Architect framework.">
 	<meta name="msapplication-tap-highlight" content="no">
-	<script src="http://genalpha.id/admin/js/jquery.js"></script>
-	<script src="http://genalpha.id/admin/js/jquery.redirect.js"></script>
-	<script src="http://genalpha.id/admin/js/global.js"></script>
-	<script src="http://genalpha.id/admin/js/view-job.js"></script>
+	<script src="http://localhost/admin/js/jquery.js"></script>
+	<script src="http://localhost/admin/js/jquery.redirect.js"></script>
+	<script src="http://localhost/admin/js/global.js"></script>
+	<script src="http://localhost/admin/js/view-job.js"></script>
 	<style>
 		@import url(https://fonts.googleapis.com/css?family=Roboto:400,400italic,600,600italic,700,700italic);
 		body {
@@ -153,13 +153,13 @@
 	=========================================================
 	* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 	-->
-	<link href="http://genalpha.id/admin/main.css" rel="stylesheet">
+	<link href="http://localhost/admin/main.css" rel="stylesheet">
 </head>
 <body>
 <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
 	<div class="app-header header-shadow">
 		<div class="app-header__logo">
-			<img src="http://genalpha.id/admin/assets/images/icon.png" width="30px" height="30px">
+			<img src="http://localhost/admin/assets/images/icon.png" width="30px" height="30px">
 			<div class="header__pane ml-auto">
 				<div>
 					<button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
@@ -200,7 +200,7 @@
 								<div class="btn-group">
 									<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 									   class="p-0 btn">
-										<img width="42" height="42" class="rounded-circle" src="http://genalpha.id/admin/images/profile_picture.png" alt="" style="border-radius: 21;">
+										<img width="42" height="42" class="rounded-circle" src="http://localhost/admin/images/profile_picture.png" alt="" style="border-radius: 21;">
 										<i class="fa fa-angle-down ml-2 opacity-8"></i>
 									</a>
 									<div tabindex="-1" role="menu" aria-hidden="true"
@@ -224,7 +224,7 @@
 	<div class="app-main">
 		<div class="app-sidebar sidebar-shadow">
 			<div class="app-header__logo">
-				<img src="http://genalpha.id/admin/assets/images/icon.png" width="30px" height="30px">
+				<img src="http://localhost/admin/assets/images/icon.png" width="30px" height="30px">
 				<div class="header__pane ml-auto">
 					<div>
 						<button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
@@ -362,7 +362,7 @@
 													padding-right: 24px;">
 													<div style="display: flex; flex-direction: row;
 														align-items: center;">
-														<img src="http://genalpha.id/admin/systemdata/pdf.png"
+														<img src="http://localhost/admin/systemdata/pdf.png"
 															 width="30px" height="30px">
 														<div style="color: #000000; font-size: 15px; margin-left: 16px;">
 															This is document title
@@ -477,6 +477,6 @@
 </div>
 <input id="admin-id" type="hidden" value="<?php echo $adminID; ?>">
 <input id="job-id" type="hidden" value="<?php echo $jobID; ?>">
-<script type="text/javascript" src="http://genalpha.id/admin/assets/scripts/main.js"></script>
+<script type="text/javascript" src="http://localhost/admin/assets/scripts/main.js"></script>
 </body>
 </html>

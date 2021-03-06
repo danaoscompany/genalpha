@@ -67,7 +67,7 @@ function save() {
 		contentType: false,
 		cache: false,
 		success: function(response) {
-			$.redirect("http://genalpha.id/admin/patients", {
+			$.redirect("http://localhost/admin/patients", {
 				'id': userID
 			});
 		}
