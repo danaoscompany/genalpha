@@ -1145,4 +1145,45 @@ class User extends CI_Controller {
 			'total_not_working_days' => $totalDays-$totalWorkingDays
 		));
 	}
+	
+	public function get_projects() {
+		$userID = intval($this->input->post('user_id'));
+		$projects = $this->db->query("SELECT * FROM `projects` WHERE `uuid` IN (SELECT `project_uuid` FROM `project_personels` WHERE `user_id`=" . $userID . " ORDER BY `start_date` DESC)")->result_array();
+		for ($i=0; $i<sizeof($projects); $i++) {
+			$personels = $this->db->query("SELECT * FROM `project_personels` WHERE `project_uuid`='" . $projects[$i]['uuid'] . "'")
+				->result_array();
+			$users = [];
+			for ($j=0; $j<sizeof($personels); $j++) {
+				array_push($users, $this->db->query("SELECT * FROM `users` WHERE `id`=" . $personels[$j]['user_id'])->row_array());
+			}
+			$projects[$i]['employer'] = $this->db->query("SELECT * FROM `employers` WHERE `id`=" . $projects[$i]['employer_id'])->row_array();
+			$projects[$i]['employees'] = $users;
+		}
+		echo json_encode($projects);
+	}
+	
+	public function get_project_documents() {
+		$userID = intval($this->input->post('user_id'));
+		$documents = $this->db->query("SELECT * FROM `project_documents` WHERE `user_id`=" . $userID . " ORDER BY `date` DESC")->result_array();
+		for ($i=0; $i<sizeof($documents); $i++) {
+			$documents[$i]['project'] = $this->db->query("SELECT * FROM `projects` WHERE `uuid`='" . $documents[$i]['project_uuid'] . "'")
+				->row_array();
+			$personels = $this->db->query("SELECT * FROM `project_personels` WHERE `project_uuid`='" . $documents[$i]['project_uuid'] . "'")
+				->result_array();
+			$users = [];
+			for ($j=0; $j<sizeof($personels); $j++) {
+				array_push($users, $this->db->query("SELECT * FROM `users` WHERE `id`=" . $personels[$j]['user_id'])->row_array());
+			}
+			$documents[$i]['project']['employer'] = $this->db->query("SELECT * FROM `employers` WHERE `id`=" . $documents[$i]['employer_id'])
+				->row_array();
+			$documents[$i]['project']['employees'] = $users;
+		}
+		echo json_encode($documents);
+	}
+	
+	public function get_project_accomodations() {
+		$uuid = $this->input->post('uuid');
+		$accomodations = $this->db->query("SELECT * FROM `project_accomodations` WHERE `project_uuid`='" . $uuid . "'")->result_array();
+		echo json_encode($accomodations);
+	}
 }
