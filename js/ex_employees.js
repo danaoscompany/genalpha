@@ -39,7 +39,7 @@ function getExEmployees() {
 }
 
 function add() {
-	window.location.href = "http://localhost/admin/payroll/add_ex_employee";
+	window.location.href = "http://genalpha.id/admin/payroll/add_ex_employee";
 }
 
 function edit(index) {

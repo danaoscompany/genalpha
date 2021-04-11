@@ -20,7 +20,7 @@ function getNews() {
 				}
 				$("#news").append("<tr>\n" +
 					"\t\t\t\t\t\t\t\t\t\t<th scope=\"row\">1</th>\n" +
-					"\t\t\t\t\t\t\t\t\t\t<td><img src='http://localhost/admin/userdata/images/"+news['img_url']+"' width='100px' height='100px'></td>\n" +
+					"\t\t\t\t\t\t\t\t\t\t<td><img src='http://genalpha.id/admin/userdata/images/"+news['img_url']+"' width='100px' height='100px'></td>\n" +
 					"\t\t\t\t\t\t\t\t\t\t<td>"+news['title']+"</td>\n" +
 					"\t\t\t\t\t\t\t\t\t\t<td>"+content+"</td>\n" +
 					"\t\t\t\t\t\t\t\t\t\t<td>"+moment(news['date']).format('D MMMM YYYY HH:MM:SS')+"</td>\n" +
@@ -34,7 +34,7 @@ function getNews() {
 
 function editNews(index) {
 	var news = allNews[index];
-	$.redirect('http://localhost/admin/news/edit', {
+	$.redirect('http://genalpha.id/admin/news/edit', {
 		'id': parseInt(news['id'])
 	});
 }
@@ -52,7 +52,7 @@ function confirmDeleteNews(index) {
 			contentType: false,
 			cache: false,
 			success: function(response) {
-				window.location.href = "http://localhost/admin/news";
+				window.location.href = "http://genalpha.id/admin/news";
 			}
 		});
 	}

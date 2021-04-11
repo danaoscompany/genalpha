@@ -30,7 +30,7 @@ function getAdmins() {
 }
 
 function editAdmin(index) {
-	$.redirect("http://localhost/admin/admin/edit", {
+	$.redirect("http://genalpha.id/admin/admin/edit", {
 		'id': admins[index]['id']
 	});
 }

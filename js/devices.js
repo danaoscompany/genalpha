@@ -53,7 +53,7 @@ function getDevices() {
 }
 
 function editDevice(index) {
-	$.redirect("http://localhost/admin/devices/edit", {
+	$.redirect("http://genalpha.id/admin/devices/edit", {
 		'uuid': devices[index]['uuid'],
 		'id': devices[index]['user_id']
 	});
@@ -84,7 +84,7 @@ function deleteDevice() {
 }
 
 function addDevice() {
-	$.redirect("http://localhost/admin/devices/add", {
+	$.redirect("http://genalpha.id/admin/devices/add", {
 		id: userID
 	});
 }

@@ -32,7 +32,7 @@ function getMessages() {
 				if (imgURL == null || imgURL == "") {
 					imgTag = "";
 				} else {
-					imgTag = "<img src='http://localhost/admin/userdata/images/"+imgURL+"' width='100px' height='100px'>";
+					imgTag = "<img src='http://genalpha.id/admin/userdata/images/"+imgURL+"' width='100px' height='100px'>";
 				}
 				$("#messages").append("<tr>" +
 					"                                        <th scope=\"row\">"+(i+1)+"</th>" +
@@ -51,7 +51,7 @@ function getMessages() {
 
 function editMessage(index) {
 	var message = messages[index];
-	$.redirect("http://localhost/admin/message/edit", {
+	$.redirect("http://genalpha.id/admin/message/edit", {
 		'id': parseInt(message['id'])
 	});
 }
@@ -75,7 +75,7 @@ function deleteMessage() {
 		contentType: false,
 		cache: false,
 		success: function(response) {
-			window.location.href = "http://localhost/admin/message";
+			window.location.href = "http://genalpha.id/admin/message";
 		}
 	});
 }

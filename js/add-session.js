@@ -77,7 +77,7 @@ function getPatients(userID) {
 						var selectedUserIndex = $("#users").prop('selectedIndex');
 						if (selectedUserIndex > 0) {
 							selectedUserIndex--;
-							$.redirect("http://localhost/admin/patients/add", {
+							$.redirect("http://genalpha.id/admin/patients/add", {
 								'id': users[selectedUserIndex]['id']
 							});
 						}

@@ -9,7 +9,7 @@ class News extends CI_Controller {
 				'adminID' => $adminID
 			));
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -22,10 +22,10 @@ class News extends CI_Controller {
 					'adminID' => $adminID
 				));
 			} else {
-				header('Location: http://localhost/admin/news');
+				header('Location: http://genalpha.id/admin/news');
 			}
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 
@@ -40,10 +40,10 @@ class News extends CI_Controller {
 					'newsID' => $newsID
 				));
 			} else {
-				header('Location: http://localhost/admin/news');
+				header('Location: http://genalpha.id/admin/news');
 			}
 		} else {
-			header('Location: http://localhost/admin/login');
+			header('Location: http://genalpha.id/admin/login');
 		}
 	}
 }

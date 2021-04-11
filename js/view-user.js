@@ -110,7 +110,7 @@ function cancelEditing() {
 }
 
 function viewResume() {
-	$.redirect("http://localhost/admin/pdf/view", {
+	$.redirect("http://genalpha.id/admin/pdf/view", {
 		url: resumeURL
 	}, 'POST', '_blank');
 }
